@@ -1,3 +1,12 @@
-const message = 'Hello world';
+import { config } from 'dotenv';
+import { initMongoConnection } from './db/initMongoConnection.js';
+import { setupServer } from './server.js';
 
-console.log(message);
+config();
+
+const startServer = async () => {
+  await initMongoConnection();
+  setupServer();
+};
+
+startServer();
