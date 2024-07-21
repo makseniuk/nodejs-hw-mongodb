@@ -44,3 +44,4 @@ const getContactById = async (req, res) => {
 };
 
 export { getContacts, getContactById };
+
