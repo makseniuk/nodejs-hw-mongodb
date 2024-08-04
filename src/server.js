@@ -1,25 +1,34 @@
 import express from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
-import contactsRouter from './routes/contacts.js';
+import router from './routes/contacts';
+import env from './utils/env';
 
-export const setupServer = () => {
+export default function setupServer() {
+  const PORT = Number(env('PORT', 3000));
   const app = express();
-  const logger = pinoHttp();
+
+  app.use(
+    pinoHttp({
+      transport: {
+        target: 'pino-pretty',
+      },
+    })
+  );
 
   app.use(cors());
-  app.use(logger);
 
-  app.use('/contacts', contactsRouter);
+  app.use(express.json());
 
-  app.use((req, res, next) => {
-    res.status(404).json({ message: 'Not found' });
+  app.use('/contacts', router);
+
+  app.use('*', (req, res) => {
+    res.status(404).json({
+      message: 'Not found',
+    });
   });
 
-  const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
-
-  return app;
-};
+}
