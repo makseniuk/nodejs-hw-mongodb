@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import pinoHttp from 'pino-http';
 import router from './routes/contacts.js';
-import env from './utils/env';
+import env from './utils/env.js';
 
 export default function setupServer() {
   const PORT = Number(env('PORT', 3000));
