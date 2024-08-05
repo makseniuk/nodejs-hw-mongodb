@@ -5,7 +5,7 @@ import contactsRouter from './routes/contacts.js';
 import errorHandler from './middlewares/errorHandler.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 
-export const setupServer = () => {
+export default function setupServer () {
   const app = express();
   const logger = pinoHttp();
 

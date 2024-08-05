@@ -1,26 +1,22 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
 
 const contactSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
     },
     email: {
       type: String,
-      validate: {
-        validator: validator.isEmail,
-        message: 'Please fill a valid email address',
-      },
       required: false,
-    },
-    phone: {
-      type: String,
-      required: [true, 'Phone is required'],
     },
     isFavourite: {
       type: Boolean,
+      required: false,
       default: false,
     },
     contactType: {
@@ -32,7 +28,8 @@ const contactSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+    versionKey: false,
+  },
 );
 
 export const Contact = mongoose.model('Contact', contactSchema);
