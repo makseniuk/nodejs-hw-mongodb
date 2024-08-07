@@ -1,6 +1,6 @@
 const ctrlWrapper = (ctrl) => {
     return (req, res, next) => {
-        ctrl(req, res).cath((err) => next(err));
+        ctrl(req, res).catch((err) => next(err));
     };
 };
 
