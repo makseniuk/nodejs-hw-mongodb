@@ -2,11 +2,7 @@ import express from 'express';
 import { getContacts, getContactById, createContact, updateContact, deleteContact } from '../controllers/contactsController.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import validateBody from '../middlewares/validateBody.js';
-<<<<<<< Updated upstream
 import isValidId from '../middlewares/isValidId.js';
-=======
-import isValidId from "../middlewares/isValidId.js";
->>>>>>> Stashed changes
 import { contactSchema, updateContactSchema } from '../validation/contactValidation.js';
 
 const router = express.Router();
