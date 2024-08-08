@@ -17,4 +17,7 @@ const updateContactSchema = Joi.object({
 });
 
 export { contactSchema, updateContactSchema };
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
