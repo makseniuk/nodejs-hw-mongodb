@@ -12,6 +12,8 @@ export default function setupServer () {
   app.use(cors());
   app.use(logger);
 
+  app.use(express.json());
+
   app.use('/contacts', contactsRouter);
 
   app.use(notFoundHandler);

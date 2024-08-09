@@ -62,7 +62,7 @@ const createContact = async (req, res) => {
   const newContact = await createContactService({ name, phoneNumber, email, isFavourite, contactType });
 
   res.status(201).json({
-    status: 201,
+    status: 'success',
     message: 'Successfully created a contact!',
     data: newContact
   });
