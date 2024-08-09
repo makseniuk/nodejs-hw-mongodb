@@ -25,7 +25,7 @@ const getContactById = async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
+    status: '200',
     message: `Successfully found contact with id ${contactId}!`,
     data: contact
   });
@@ -41,7 +41,7 @@ const createContact = async (req, res) => {
   const newContact = await createContactService({ name, phoneNumber, email, isFavourite, contactType });
 
   res.status(201).json({
-    status: 'success',
+    status: '201',
     message: 'Successfully created a contact!',
     data: newContact
   });
@@ -58,7 +58,7 @@ const updateContact = async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
+    status: '200',
     message: 'Successfully patched a contact!',
     data: updatedContact
   });
