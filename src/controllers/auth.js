@@ -2,6 +2,8 @@ import { createUser } from '../services/auth.js';
 import createHttpError from 'http-errors';
 import { authenticateUser } from '../services/auth.js';
 import { refreshUserSession } from '../services/auth.js';
+import { endUserSession } from '../services/auth.js';
+
 
 
 export const registerUser = async (req, res, next) => {
@@ -78,6 +80,23 @@ export const refreshSession = async (req, res, next) => {
         accessToken,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const logoutUser = async (req, res, next) => {
+  try {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      throw createHttpError(400, 'Refresh token not provided');
+    }
+
+    await endUserSession(refreshToken);
+
+    res.clearCookie('refreshToken');
+    res.status(204).send();
   } catch (error) {
     next(error);
   }

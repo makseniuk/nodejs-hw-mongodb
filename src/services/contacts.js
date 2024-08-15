@@ -1,13 +1,13 @@
-import { Contact } from "../db/Models/contactsModel.js";
+import { Contact } from '../db/Models/contactsModel.js';
 
-const getAllContacts = async () => {
-  const contacts = await Contact.find();
+const getAllContacts = async (userId) => {
+  const contacts = await Contact.find({ userId });
   return contacts;
 };
 
-const getContactById = async (id) => {
-  const contacts = await Contact.findById(id);
-  return contacts;
+const getContactById = async (id, userId) => {
+  const contact = await Contact.findOne({ _id: id, userId });
+  return contact;
 };
 
 const createContact = async (contactData) => {
@@ -16,15 +16,18 @@ const createContact = async (contactData) => {
   return newContact;
 };
 
-const updateContact = async (contactId, updatedData) => {
-  const updatedContact = await Contact.findByIdAndUpdate(contactId, updatedData, { new: true });
+const updateContact = async (contactId, updatedData, userId) => {
+  const updatedContact = await Contact.findOneAndUpdate(
+    { _id: contactId, userId },
+    updatedData,
+    { new: true },
+  );
   return updatedContact;
 };
 
-const deleteContact = async (contactId) => {
-  const deletedContact = await Contact.findByIdAndDelete(contactId);
+const deleteContact = async (contactId, userId) => {
+  const deletedContact = await Contact.findOneAndDelete({ _id: contactId, userId });
   return deletedContact;
 };
 
 export { getAllContacts, getContactById, createContact, updateContact, deleteContact };
-
