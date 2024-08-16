@@ -8,11 +8,32 @@ import {
 import createHttpError from 'http-errors';
 
 const getContacts = async (req, res) => {
-  const contacts = await getAllContacts(req.user._id);
+  const { page = 1, perPage = 10, sortBy = 'name', sortOrder = 'asc' } = req.query;
+  const pageNumber = parseInt(page, 10);
+  const perPageNumber = parseInt(perPage, 10);
+  const sortDirection = sortOrder === 'desc' ? -1 : 1;
+
+  const totalItems = await getAllContacts(req.user._id).countDocuments();
+
+  const contacts = await getAllContacts(req.user._id)
+    .sort({ [sortBy]: sortDirection })
+    .skip((pageNumber - 1) * perPageNumber)
+    .limit(perPageNumber);
+
+  const totalPages = Math.ceil(totalItems / perPageNumber);
+
   res.status(200).json({
     status: 'success',
     message: 'Successfully found contacts!',
-    data: contacts,
+    data: {
+      data: contacts,
+      page: pageNumber,
+      perPage: perPageNumber,
+      totalItems,
+      totalPages,
+      hasPreviousPage: pageNumber > 1,
+      hasNextPage: pageNumber < totalPages,
+    },
   });
 };
 
