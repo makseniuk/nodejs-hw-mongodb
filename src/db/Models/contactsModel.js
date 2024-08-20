@@ -30,6 +30,10 @@ const contactSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    photo: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
@@ -38,4 +42,3 @@ const contactSchema = new mongoose.Schema(
 );
 
 export const Contact = mongoose.model('Contact', contactSchema);
-
