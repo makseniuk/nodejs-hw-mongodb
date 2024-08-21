@@ -13,20 +13,20 @@ const getContacts = async (req, res) => {
   const perPageNumber = parseInt(perPage, 10);
   const sortDirection = sortOrder === 'desc' ? -1 : 1;
 
-  const totalItems = await getAllContacts(req.user._id).countDocuments();
+  const contacts = await getAllContacts(req.user._id);
+  const totalItems = contacts.length;
 
-  const contacts = await getAllContacts(req.user._id)
-    .sort({ [sortBy]: sortDirection })
-    .skip((pageNumber - 1) * perPageNumber)
-    .limit(perPageNumber);
+  const paginatedContacts = contacts
+    .sort((a, b) => (sortDirection === 1 ? a[sortBy].localeCompare(b[sortBy]) : b[sortBy].localeCompare(a[sortBy])))
+    .slice((pageNumber - 1) * perPageNumber, pageNumber * perPageNumber);
 
   const totalPages = Math.ceil(totalItems / perPageNumber);
 
   res.status(200).json({
-    status: 'success',
+    status: 200,
     message: 'Successfully found contacts!',
     data: {
-      data: contacts,
+      data: paginatedContacts,
       page: pageNumber,
       perPage: perPageNumber,
       totalItems,
@@ -46,7 +46,7 @@ const getContactById = async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
+    status: 200,
     message: `Successfully found contact with id ${contactId}!`,
     data: contact,
   });
@@ -80,7 +80,7 @@ const updateContact = async (req, res) => {
   }
 
   res.status(200).json({
-    status: 'success',
+    status: 200,
     message: 'Successfully patched a contact!',
     data: updatedContact,
   });
