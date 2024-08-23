@@ -1,5 +1,10 @@
+import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import router from '../routes/contacts';
+import fs from 'fs';
+import path from 'path';
+
+const upload = multer({ dest: 'uploads/' });
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,13 +12,16 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'uploads',
-    format: async (req, file) => 'png',
-    public_id: (req, file) => file.originalname.split('.')[0],
-  },
+router.post('/upload', upload.single('file'), async (req, res) => {
+  try {
+    const filePath = path.join(__dirname, '../uploads/', req.file.filename);
+    const result = await cloudinary.uploader.upload(filePath);
+    fs.unlinkSync(filePath);
+    res.status(200).json({
+      message: 'File successfully uploaded to Cloudinary!',
+      fileUrl: result.secure_url,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while uploading the file', error });
+  }
 });
-
-export { cloudinary, storage };
