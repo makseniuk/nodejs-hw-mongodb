@@ -1,10 +1,9 @@
-import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
-import router from '../routes/contacts';
+import router from '../routes/contacts.js';
+import upload from '../middlewares/upload.js';
 import fs from 'fs';
 import path from 'path';
 
-const upload = multer({ dest: 'uploads/' });
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -25,3 +24,5 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     res.status(500).json({ message: 'An error occurred while uploading the file', error });
   }
 });
+
+export { cloudinary };
